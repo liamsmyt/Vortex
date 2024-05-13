@@ -1,0 +1,106 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: retroComputer;
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: "retroComputer";
+  src: url("rescources/retro_computer_personal_use.woff") format("woff");
+}
+
+.container {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #153677, #125781);
+  padding: 10px;
+}
+
+.todo-app {
+  width: 100%;
+  max-width: 540px;
+  background: #001030;
+  margin: 20px 20px 200px;
+  padding: 40px 30px 70px;
+  border-radius: 1px;
+}
+
+.todo-app h2 {
+  color: #cdb5b5;
+  display: flex;
+  align-items: start;
+  margin-bottom: 20px;
+}
+
+.todo-app h2 img {
+  width: 30px;
+  margin-left: 10px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #153677;
+  border-radius: 5px;
+  padding-left: 20px;
+  margin-bottom: 35px;
+  border-color: #125781;
+  border-style: dotted;
+}
+
+input {
+  color: #cdb5b5;
+  flex: 1;
+  border: none;
+  outline: #125781;
+  background: none;
+  padding: 1px;
+}
+
+button {
+  border: none;
+  outline: none;
+  padding: 16px 50px;
+  background: #125781;
+  color: #cdb5b5;
+  font-size: 16px;
+  border-radius: 2px;
+}
+
+ul li {
+  list-style: none;
+  font-size: 10px;
+  padding: 12px 6px 18px 16px;
+  user-select: none;
+  width: 250px;
+  height: 250px;
+  color: #153677;
+  position: relative;
+  cursor: pointer;
+  background-color: #cdb5b5;
+  border-radius: 50%;
+}
+
+ul li.checked {
+  color: #cdb5b5;
+  text-decoration: line-through;
+}
+
+ul li span {
+  position: absolute;
+  right: 0;
+  top: 5px;
+  width: 40px;
+  height: 40px;
+  font-size: 22px;
+  border-radius: 5px;
+  color: #555;
+  line-height: 40px;
+  text-align: center;
+}
+
+ul li span:hover {
+  background: #125781;
+}

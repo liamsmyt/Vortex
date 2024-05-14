@@ -4,13 +4,14 @@ cvs.width = 600;
 cvs.height = 500;
 cvs.style.display = "block";
 cvs.style.margin = "0 auto";
-let divider = 0.1;
-let dividerRate = 0.1;
-let radius = 200;
 let angle = 0;
 let animationId;
 let startAnimation = false;
-let distanceFromCentre = 50;
+
+let radius = 150;
+let dividerRate = 0.1;
+let distanceFromCentre = 100;
+let depth = 2;
 
 function circle(radius, distanceFromCentre, angle) {
   let x = cvs.width / 2 + distanceFromCentre * Math.sin(angle);
@@ -22,18 +23,17 @@ function circle(radius, distanceFromCentre, angle) {
   ctx.closePath();
 
   if (angle > 2 * Math.PI) {
-    angle = 0;
     return;
   }
-  circle(radius, distanceFromCentre, angle + Math.PI / divider / 2);
+  circle(radius, distanceFromCentre, angle + Math.PI / depth);
 }
 
 // animation function
 function drawCircle() {
   if (startAnimation) {
     ctx.clearRect(0, 0, cvs.width, cvs.height);
-    circle(radius, distanceFromCentre, angle);
-    if (divider < 3) divider += dividerRate;
+    circle(radius, distanceFromCentre, 0);
+    if (depth < 40) depth += dividerRate;
     animationId = requestAnimationFrame(drawCircle);
   }
 }
@@ -56,11 +56,18 @@ function playPauseAnimation(event) {
   ) {
     // Check if the pressed key is spacebar
     ctx.clearRect(0, 0, cvs.width, cvs.height);
-    divider = 0;
+    angle = 0;
+    depth = 0;
     startAnimation = false;
     drawCircle();
   }
 }
+
+// Set initial values for input fields
+document.getElementById("circleRadius").value = radius;
+document.getElementById("distanceFromCentre").value = distanceFromCentre;
+document.getElementById("rate").value = dividerRate;
+document.getElementById("depth").value = depth;
 
 document.addEventListener("keydown", playPauseAnimation);
 document
@@ -73,9 +80,7 @@ document
 document
   .getElementById("circleRadius")
   .addEventListener("input", function (event) {
-    if (radius !== parseInt(event.target.value)) {
-      radius = parseInt(event.target.value);
-    }
+    radius = parseInt(event.target.value);
   });
 document
   .getElementById("distanceFromCentre")
@@ -86,6 +91,7 @@ document
   });
 document.getElementById("rate").addEventListener("input", function (event) {
   dividerRate = parseFloat(event.target.value);
-  console.log(divider);
-  console.log(dividerRate);
+});
+document.getElementById("depth").addEventListener("input", function (event) {
+  depth = parseFloat(event.target.value);
 });

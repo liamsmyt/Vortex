@@ -6,35 +6,65 @@ cvs.style.margin = "0 auto";
 let divider = 0.1;
 let radius = 200;
 let animationId;
+let startAnimation = false;
+let distanceFromCentre = 200;
 
 function circle(radius, distanceFromCentre, angle) {
   let x = cvs.width / 2 + distanceFromCentre * Math.sin(angle);
   let y = cvs.height / 2 + distanceFromCentre * Math.cos(angle);
 
-  let gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
-  gradient.addColorStop(0, "white"); // Start color
-  gradient.addColorStop(1, "blue"); // End color // End color
-
   ctx.beginPath();
   ctx.arc(x, y, radius, 0, 2 * Math.PI);
-  ctx.strokeStyle = gradient;
   ctx.stroke();
-  ctx.closePath();
   ctx.closePath();
 
   if (angle > 2 * Math.PI) {
     return;
   }
-  circle(radius, 200, angle + Math.PI / divider / 2);
+  circle(200, 300, angle + Math.PI / divider / 2);
 }
 
-function main() {
-  ctx.clearRect(0, 0, cvs.width, cvs.height);
-  circle(radius, 0, 0);
-  if (divider < 12) divider += 0.1;
-  if (radius >= 200) radius += 0.5;
-  animationId = requestAnimationFrame(main);
+// animation function
+function drawCircle() {
+  if (startAnimation) {
+    ctx.clearRect(0, 0, cvs.width, cvs.height);
+    circle(200, 0, 0);
+    if (divider < 12) divider += 0.1;
+    animationId = requestAnimationFrame(drawCircle);
+  }
 }
 
-// Add event listener for keydown on the document
-document.addEventListener("keydown", main);
+//
+function playPauseAnimation(event) {
+  if (
+    event.keyCode === 32 ||
+    (event.type === "click" && event.target.id === "playPauseButton")
+  ) {
+    // Check if the pressed key is spacebar
+    startAnimation = !startAnimation;
+    drawCircle();
+  }
+
+  // reset animation
+  if (
+    event.key === "q" ||
+    (event.type === "click" && event.target.id === "resetButton")
+  ) {
+    // Check if the pressed key is spacebar
+    ctx.clearRect(0, 0, cvs.width, cvs.height);
+    divider = 0;
+    startAnimation = false;
+    drawCircle();
+  }
+}
+
+// Add play/pause event listeners
+document.addEventListener("keydown", playPauseAnimation);
+document
+  .getElementById("playPauseButton")
+  .addEventListener("click", playPauseAnimation);
+document
+  .getElementById("resetButton")
+  .addEventListener("click", playPauseAnimation);
+
+function main() {}

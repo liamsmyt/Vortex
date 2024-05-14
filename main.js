@@ -5,7 +5,9 @@ cvs.height = 500;
 cvs.style.display = "block";
 cvs.style.margin = "0 auto";
 let divider = 0.1;
+let dividerRate = 0.1;
 let radius = 200;
+let angle = 0;
 let animationId;
 let startAnimation = false;
 let distanceFromCentre = 50;
@@ -20,17 +22,18 @@ function circle(radius, distanceFromCentre, angle) {
   ctx.closePath();
 
   if (angle > 2 * Math.PI) {
+    angle = 0;
     return;
   }
-  circle(radius, 150, angle + Math.PI / divider / 2);
+  circle(radius, distanceFromCentre, angle + Math.PI / divider / 2);
 }
 
 // animation function
 function drawCircle() {
   if (startAnimation) {
     ctx.clearRect(0, 0, cvs.width, cvs.height);
-    circle(radius, 0, 0);
-    if (divider < 12) divider += 0.1;
+    circle(radius, distanceFromCentre, angle);
+    if (divider < 3) divider += dividerRate;
     animationId = requestAnimationFrame(drawCircle);
   }
 }
@@ -74,5 +77,15 @@ document
       radius = parseInt(event.target.value);
     }
   });
-
-function main() {}
+document
+  .getElementById("distanceFromCentre")
+  .addEventListener("input", function (event) {
+    if (distanceFromCentre !== parseInt(event.target.value)) {
+      distanceFromCentre = parseInt(event.target.value);
+    }
+  });
+document.getElementById("rate").addEventListener("input", function (event) {
+  dividerRate = parseFloat(event.target.value);
+  console.log(divider);
+  console.log(dividerRate);
+});

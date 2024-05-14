@@ -1,13 +1,14 @@
 const cvs = document.getElementById("myCanvas");
 const ctx = cvs.getContext("2d");
-cvs.width = cvs.height = 1200;
+cvs.width = 600;
+cvs.height = 500;
 cvs.style.display = "block";
 cvs.style.margin = "0 auto";
 let divider = 0.1;
 let radius = 200;
 let animationId;
 let startAnimation = false;
-let distanceFromCentre = 200;
+let distanceFromCentre = 50;
 
 function circle(radius, distanceFromCentre, angle) {
   let x = cvs.width / 2 + distanceFromCentre * Math.sin(angle);
@@ -21,14 +22,14 @@ function circle(radius, distanceFromCentre, angle) {
   if (angle > 2 * Math.PI) {
     return;
   }
-  circle(200, 300, angle + Math.PI / divider / 2);
+  circle(radius, 150, angle + Math.PI / divider / 2);
 }
 
 // animation function
 function drawCircle() {
   if (startAnimation) {
     ctx.clearRect(0, 0, cvs.width, cvs.height);
-    circle(200, 0, 0);
+    circle(radius, 0, 0);
     if (divider < 12) divider += 0.1;
     animationId = requestAnimationFrame(drawCircle);
   }
@@ -58,7 +59,6 @@ function playPauseAnimation(event) {
   }
 }
 
-// Add play/pause event listeners
 document.addEventListener("keydown", playPauseAnimation);
 document
   .getElementById("playPauseButton")
@@ -66,5 +66,13 @@ document
 document
   .getElementById("resetButton")
   .addEventListener("click", playPauseAnimation);
+
+document
+  .getElementById("circleRadius")
+  .addEventListener("input", function (event) {
+    if (radius !== parseInt(event.target.value)) {
+      radius = parseInt(event.target.value);
+    }
+  });
 
 function main() {}

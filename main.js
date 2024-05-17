@@ -8,32 +8,85 @@ let angle = 0;
 let animationId;
 let startAnimation = false;
 
-let radius = 150;
+let radiusIncrement = 0;
+
+let radius = 100;
 let dividerRate = 0.1;
 let distanceFromCentre = 100;
 let depth = 2;
 
-function circle(radius, distanceFromCentre, angle) {
+function getCoords(angle, distanceFromCentre) {
   let x = cvs.width / 2 + distanceFromCentre * Math.sin(angle);
   let y = cvs.height / 2 + distanceFromCentre * Math.cos(angle);
 
+  // return array
+  return [x, y];
+}
+
+function circle(radius, distanceFromCentre, angle) {
+  let coordinates = getCoords(angle, distanceFromCentre); //returns [x, y] array
+
   ctx.beginPath();
-  ctx.arc(x, y, radius, 0, 2 * Math.PI);
+  ctx.arc(coordinates[0], coordinates[1], radius, 0, 2 * Math.PI);
   ctx.stroke();
   ctx.closePath();
 
   if (angle > 2 * Math.PI) {
     return;
   }
+
   circle(radius, distanceFromCentre, angle + Math.PI / depth);
+}
+
+function growingCircle(radius, distanceFromCentre, angle, radiusIncrement) {
+  let coordinates = getCoords(angle, distanceFromCentre);
+  let yIncrease = 40;
+  let xIncrease = 5;
+  radius += radiusIncrement / 20;
+
+  for (let i = 0; i < 3; i++) {
+    yIncrease = yIncrease * i;
+    ctx.beginPath();
+    ctx.arc(coordinates[0], coordinates[1] + yIncrease, radius, 0, 2 * Math.PI);
+    ctx.stroke();
+    ctx.closePath();
+  }
+
+  for (let i = 0; i < 3; i++) {
+    xIncrease = xIncrease * i * 2;
+    ctx.beginPath();
+    ctx.arc(coordinates[0] + yIncrease, coordinates[1], radius, 0, 2 * Math.PI);
+    ctx.stroke();
+    ctx.closePath();
+  }
+
+  if (angle > 2 * Math.PI) {
+    return;
+  }
+
+  growingCircle(
+    radius,
+    distanceFromCentre,
+    angle + Math.PI / depth,
+    radiusIncrement
+  );
 }
 
 // animation function
 function drawCircle() {
   if (startAnimation) {
     ctx.clearRect(0, 0, cvs.width, cvs.height);
-    circle(radius, distanceFromCentre, 0);
-    if (depth < 40) depth += dividerRate;
+    radiusIncrement++;
+    growingCircle(radius, distanceFromCentre, 0, radiusIncrement);
+    growingCircle(radius + 50, distanceFromCentre, 0, radiusIncrement);
+    growingCircle(radius + 100, distanceFromCentre, 0, radiusIncrement);
+    growingCircle(radius + 150, distanceFromCentre, 0, radiusIncrement);
+
+    if (depth < 40) {
+      depth += dividerRate;
+    } else {
+      return;
+    }
     animationId = requestAnimationFrame(drawCircle);
   }
 }
@@ -58,6 +111,7 @@ function playPauseAnimation(event) {
     ctx.clearRect(0, 0, cvs.width, cvs.height);
     angle = 0;
     depth = 0;
+    radiusIncrement = 0;
     startAnimation = false;
     drawCircle();
   }

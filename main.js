@@ -80,7 +80,6 @@ function drawCircle() {
     growingCircle(radius, distanceFromCentre, 0, radiusIncrement);
     growingCircle(radius + 50, distanceFromCentre, 0, radiusIncrement);
     growingCircle(radius + 100, distanceFromCentre, 0, radiusIncrement);
-    growingCircle(radius + 150, distanceFromCentre, 0, radiusIncrement);
 
     if (depth < 40) {
       depth += dividerRate;

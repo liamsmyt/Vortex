@@ -5,9 +5,15 @@
   box-sizing: border-box;
 }
 
+@font-face {
+  font-family: "DigitalFont"; /* Font family name */
+  src: url("retro_computer_personal_use.woff") format("woff"); /* Path to the .woff font file */
+  /* Add additional src declarations for different font formats if needed (e.g., woff2, ttf, etc.) */
+}
+
 /* Body Styling */
 body {
-  font-family: Arial, sans-serif;
+  font-family: DigitalFont;
   background-color: #f4f4f4;
   display: flex;
   justify-content: center; /* Center the controls horizontally */
@@ -57,11 +63,12 @@ body {
 }
 
 .buttons button {
+  font-family: DigitalFont;
   flex: 1;
   padding: 10px 20px;
   border: none;
   border-radius: 4px;
-  background-color: #007bff;
+  background-color: #bbb78e;
   color: white;
   font-size: 16px;
   cursor: pointer;
@@ -69,7 +76,7 @@ body {
 }
 
 .buttons button:hover {
-  background-color: #0056b3;
+  background-color: #c1b428;
 }
 
 /* Canvas Styling */

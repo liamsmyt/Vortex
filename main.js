@@ -8,9 +8,7 @@ let angle = 0;
 let animationId;
 let startAnimation = false;
 
-let radiusIncrement = 0;
-
-let depth = 2;
+let depth = 2.0;
 
 function getCoords(angle, distanceFromCentre) {
   let x = cvs.width / 2 + distanceFromCentre * Math.sin(angle);
@@ -21,16 +19,29 @@ function getCoords(angle, distanceFromCentre) {
 }
 
 function circle(radius, distanceFromCentre, angle) {
+  // all circles have been drawn exit recursion
+  if (angle > 2 * Math.PI) {
+    return;
+  }
+
   let coordinates = getCoords(angle, distanceFromCentre); //returns [x, y] array
+
+  let linearStrokeGradient = ctx.createLinearGradient(
+    0,
+    0,
+    cvs.width,
+    cvs.height
+  );
+
+  linearStrokeGradient.addColorStop(0, "green");
+  linearStrokeGradient.addColorStop(1, "blue");
+
+  ctx.strokeStyle = linearStrokeGradient;
 
   ctx.beginPath();
   ctx.arc(coordinates[0], coordinates[1], radius, 0, 2 * Math.PI);
   ctx.stroke();
   ctx.closePath();
-
-  if (angle > 2 * Math.PI) {
-    return;
-  }
 
   circle(radius, distanceFromCentre, angle + Math.PI / depth);
 }
@@ -73,13 +84,11 @@ function circle(radius, distanceFromCentre, angle) {
 function drawCircle() {
   if (startAnimation) {
     ctx.clearRect(0, 0, cvs.width, cvs.height);
-    radiusIncrement++;
     circle(radius, distanceFromCentre, angle);
     if (depth < instances) {
       depth += dividerRate;
-    } else {
-      return;
     }
+
     animationId = requestAnimationFrame(drawCircle);
   }
 }
@@ -94,7 +103,6 @@ function resetAnimation() {
   ctx.clearRect(0, 0, cvs.width, cvs.height);
   angle = 0;
   depth = 0;
-  radiusIncrement = 0;
   startAnimation = false;
 }
 

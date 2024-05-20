@@ -14,7 +14,7 @@
 /* Body Styling */
 body {
   font-family: DigitalFont;
-  background-color: #f4f4f4;
+  background-color: #343030;
   display: flex;
   justify-content: center; /* Center the controls horizontally */
   align-items: center;
@@ -33,7 +33,7 @@ body {
 
 /* Controls Styling */
 .controls {
-  background-color: #ffffff;
+  background-color: #ccc;
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -68,7 +68,7 @@ body {
   padding: 10px 20px;
   border: none;
   border-radius: 4px;
-  background-color: #bbb78e;
+  background-color: #ccc;
   color: white;
   font-size: 16px;
   cursor: pointer;
@@ -76,12 +76,14 @@ body {
 }
 
 .buttons button:hover {
-  background-color: #c1b428;
+  background-color: #797373;
 }
 
 /* Canvas Styling */
 canvas {
   border: 1px solid #ccc;
+  background-color: #ccc;
   display: block;
   margin: 0 auto;
+  border-radius: 8px;
 }

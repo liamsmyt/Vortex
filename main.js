@@ -7,24 +7,47 @@ cvs.style.margin = "0 auto";
 let angle = 0;
 let animationId;
 let startAnimation = false;
+let pos = "";
 
 let depth = 2.0;
 
-function getCoords(angle, distanceFromCentre) {
+function getCoords(pos, angle, distanceFromCentre) {
+  // center canvas
   let x = cvs.width / 2 + distanceFromCentre * Math.sin(angle);
   let y = cvs.height / 2 + distanceFromCentre * Math.cos(angle);
+
+  switch (pos) {
+    case "topLeft":
+      x -= 150;
+      y -= 125;
+      break;
+    case "topRight":
+      x += 150;
+      y -= 125;
+      break;
+    case "bottomLeft":
+      x -= 150;
+      y += 125;
+      break;
+    case "bottomRight":
+      x += 150;
+      y += 125;
+      break;
+    default:
+      console.log("Errpor: No valid pos given");
+  }
 
   // return array
   return [x, y];
 }
 
-function circle(radius, distanceFromCentre, angle) {
+function circle(pos, radius, distanceFromCentre, angle) {
   // all circles have been drawn exit recursion
   if (angle > 2 * Math.PI) {
     return;
   }
 
-  let coordinates = getCoords(angle, distanceFromCentre); //returns [x, y] array
+  let coordinates = getCoords(pos, angle, distanceFromCentre); //returns [x, y] array
 
   let linearStrokeGradient = ctx.createLinearGradient(
     0,
@@ -33,17 +56,18 @@ function circle(radius, distanceFromCentre, angle) {
     cvs.height
   );
 
-  linearStrokeGradient.addColorStop(0, "green");
-  linearStrokeGradient.addColorStop(1, "blue");
-
+  linearStrokeGradient.addColorStop(0, "red");
+  linearStrokeGradient.addColorStop(1, "green");
+  24;
   ctx.strokeStyle = linearStrokeGradient;
-
   ctx.beginPath();
   ctx.arc(coordinates[0], coordinates[1], radius, 0, 2 * Math.PI);
   ctx.stroke();
   ctx.closePath();
 
-  circle(radius, distanceFromCentre, angle + Math.PI / depth);
+  radius += 5;
+
+  circle(pos, radius, distanceFromCentre, angle + Math.PI / depth);
 }
 
 // function growingCircle(radius, distanceFromCentre, angle, radiusIncrement) {
@@ -83,8 +107,18 @@ function circle(radius, distanceFromCentre, angle) {
 // animation function
 function drawCircle() {
   if (startAnimation) {
+    // clear canvas for next frame
     ctx.clearRect(0, 0, cvs.width, cvs.height);
-    circle(radius, distanceFromCentre, angle);
+
+    pos = "topRight";
+    circle(pos, radius, distanceFromCentre, angle);
+    pos = "topLeft";
+    circle(pos, radius, distanceFromCentre, angle);
+    pos = "bottomRight";
+    circle(pos, radius, distanceFromCentre, angle);
+    pos = "bottomLeft";
+    circle(pos, radius, distanceFromCentre, angle);
+
     if (depth < instances) {
       depth += dividerRate;
     }
